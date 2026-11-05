@@ -6,6 +6,7 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse, StreamingResponse
 
 from .agent import reply, stream_events
+from .auth import install_auth
 from .store import Store
 
 logger = logging.getLogger(__name__)
@@ -13,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 def create_app(store=None, agent=None):
     app = FastAPI(title='Tablet Agent')
+    install_auth(app)
     store = store or Store(os.environ.get('DATABASE_PATH', '/data/chats.sqlite3'))
     streaming_agent = stream_events if agent is None else lambda history, content: iter([{'text': agent(history, content)}])
     agent = agent or reply

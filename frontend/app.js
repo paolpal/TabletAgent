@@ -40,6 +40,7 @@
         xhr.onreadystatechange = function () {
             var result;
             if (xhr.readyState !== 4) return;
+            if (xhr.status === 401) { window.location.replace('/login.html'); return; }
             try { result = JSON.parse(xhr.responseText); } catch (error) { result = {}; }
             finish(xhr.status >= 200 && xhr.status < 300 ? null : (result.error || 'Errore di connessione. Riprova.'), result);
         };
@@ -262,6 +263,7 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 3 || xhr.readyState === 4) process();
                 if (xhr.readyState !== 4) return;
+                if (xhr.status === 401) { window.location.replace('/login.html'); return; }
                 busy = false; send.disabled = false;
                 if (done && !failed) {
                     status.textContent = '';
