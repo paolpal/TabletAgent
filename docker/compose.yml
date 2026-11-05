@@ -33,6 +33,8 @@ services:
   frontend:
     build: ../frontend
     restart: unless-stopped
+    labels:
+      icon: "${CASAOS_ICON_URL:-http://casaos.local:${TABLET_AGENT_PORT:-8088}/icon-512.png}"
     ports:
       - "${TABLET_AGENT_PORT:-8088}:8080"
     depends_on:
