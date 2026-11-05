@@ -1,0 +1,22 @@
+name: tablet-agent
+services:
+  backend:
+    build: ../backend
+    restart: unless-stopped
+    environment:
+      AGENT_MODE: ${AGENT_MODE:-mock}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      OPEN_ROUTER_KEY: ${OPEN_ROUTER_KEY:-}
+      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-openrouter/free}
+      DATABASE_PATH: /data/chats.sqlite3
+    volumes:
+      - chats:/data
+  frontend:
+    build: ../frontend
+    restart: unless-stopped
+    ports:
+      - "${TABLET_AGENT_PORT:-8088}:8080"
+    depends_on:
+      - backend
+volumes:
+  chats:

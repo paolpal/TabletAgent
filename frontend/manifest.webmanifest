@@ -1,0 +1,12 @@
+{
+  "name": "Tablet Agent",
+  "short_name": "Tablet Agent",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#19191c",
+  "theme_color": "#19191c",
+  "icons": [
+    {"src": "icon-512.png?v=2", "sizes": "512x512", "type": "image/png"}
+  ]
+}
