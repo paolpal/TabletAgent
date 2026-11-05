@@ -23,7 +23,7 @@ Visita `http://IP_DEL_SERVER:8088` dalla rete locale. I messaggi sono conservati
 
 ## CasaOS
 
-Il file `docker/compose.yml` include i metadati CasaOS, con `frontend` come servizio principale. La porta del collegamento segue `TABLET_AGENT_PORT` (predefinita `8088`). L’icona è servita dall’app; per impostazione predefinita usa `http://casaos.local:8088/icon-512.png` (con la porta configurata). Se `casaos.local` non è raggiungibile, imposta `CASAOS_ICON_URL` in `docker/.env` con l'indirizzo completo dell'icona, per esempio `http://192.168.1.10:8088/icon-512.png`. L'URL deve essere raggiungibile dalla dashboard e dai dispositivi che la visualizzano.
+Il file `docker/compose.yml` include i metadati CasaOS, con `frontend` come servizio principale. La porta del collegamento segue `TABLET_AGENT_PORT` (predefinita `8088`). Per l’icona, copia `frontend/icon-512.png` in `/var/lib/casaos/www/img/tablet-agent.png` sul server CasaOS: il portale la servirà come `/img/tablet-agent.png`, anche quando è aperto da un altro dispositivo. `CASAOS_ICON_URL` consente di usare un indirizzo alternativo quando l'ambiente che legge il Compose lo fornisce.
 
 Il Compose usa build locali (`../frontend` e `../backend`): conserva l'intera repository sul server ed eseguilo dalla directory `docker/`. I metadati non trasformano la repository privata in un pacchetto App Store o in immagini pubbliche.
 
