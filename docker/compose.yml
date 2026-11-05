@@ -9,9 +9,6 @@ services:
       OPEN_ROUTER_KEY: ${OPEN_ROUTER_KEY:-}
       OPENROUTER_MODEL: ${OPENROUTER_MODEL:-openrouter/free}
       DATABASE_PATH: /data/chats.sqlite3
-      AUTH_PASSWORD: ${AUTH_PASSWORD:-}
-      AUTH_SESSION_SECRET: ${AUTH_SESSION_SECRET:-}
-      AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-true}
     volumes:
       - chats:/data
   frontend:

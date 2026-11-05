@@ -140,13 +140,3 @@ button { cursor: pointer; }
 .brand > span { display: inline-block; vertical-align: middle; }
 .brand-mark { margin-right: 3px; }
 .message.assistant .avatar .mark-image { position: absolute; width: 25px; height: 25px; top: 50%; left: 50%; margin: -12.5px 0 0 -12.5px; }
-.login-body { min-height: 100%; padding: 30px 16px; }
-.login-card { max-width: 380px; margin: 12% auto 0; padding: 28px; border: 1px solid #3a3a3f; border-radius: 12px; background: #222226; }
-.login-mark { width: 48px; height: 48px; }
-.login-card h1 { margin: 12px 0 8px; font-size: 24px; }
-.login-card p { color: #aaaab0; line-height: 1.5; }
-.login-card label { display: block; margin: 24px 0 8px; font-size: 13px; }
-.login-card input { width: 100%; padding: 12px; color: #eee; background: #19191c; border: 1px solid #505056; border-radius: 7px; font-size: 16px; }
-.login-card button { width: 100%; padding: 12px; border: 0; border-radius: 7px; background: #f2a35e; color: #2b1b10; font-weight: bold; }
-.login-card button:disabled { opacity: .5; }
-.login-card #login-error { color: #f2a35e; font-size: 13px; }

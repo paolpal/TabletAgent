@@ -40,9 +40,3 @@ L'app iniziale non ha autenticazione né HTTPS: usala solo su una rete fidata, s
 ## Aggiungere alla schermata Home
 
 Su iPad, apri l’indirizzo dell’app in Safari, tocca Condividi e scegli «Aggiungi a Home». Avviala dall’icona creata: si aprirà senza la barra degli indirizzi di Safari. Il server deve restare raggiungibile sulla rete locale.
-
-## Esperimento: accesso con password condivisa
-
-Sul branch `prova-accesso` si può provare un login per uno spazio condiviso. Nel file `docker/.env`, impostare `AUTH_PASSWORD` e `AUTH_SESSION_SECRET` (almeno 32 byte casuali, generabili con `python3 -c "import secrets; print(secrets.token_urlsafe(48))"`). Con HTTPS lasciare `AUTH_COOKIE_SECURE=true`; usare `false` soltanto per le prove su HTTP locale. Se `AUTH_PASSWORD` è vuota, il login è disattivato. Riavviare i container dopo aver cambiato la configurazione.
-
-Questa è una prova, non ancora una soluzione verificata per l’esposizione pubblica: il limite dei tentativi è in memoria e per processo, il logout elimina il cookie del browser ma non revoca un cookie copiato, e tutti gli utenti condividono le conversazioni. Testare HTTPS, proxy e tablet prima dell’uso pubblico.
