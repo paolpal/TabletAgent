@@ -46,14 +46,14 @@ services:
 volumes:
   chats:
 
-# CasaOS/ZimaOS metadata. Set CASAOS_ICON_URL when casaos.local is not reachable.
+# CasaOS/ZimaOS metadata. The default icon is served by the CasaOS portal.
 x-casaos:
   id: xyz.palumbolab.tabletagent
   main: frontend
   index: /
   port_map: "${TABLET_AGENT_PORT:-8088}"
   scheme: http
-  icon: "${CASAOS_ICON_URL:-http://casaos.local:${TABLET_AGENT_PORT:-8088}/icon-512.png}"
+  icon: "${CASAOS_ICON_URL:-/img/tablet-agent.png}"
   title:
     en_US: Tablet Agent
     it_IT: Tablet Agent
