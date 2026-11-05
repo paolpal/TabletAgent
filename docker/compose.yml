@@ -11,6 +11,25 @@ services:
       DATABASE_PATH: /data/chats.sqlite3
     volumes:
       - chats:/data
+    x-casaos:
+      envs:
+        - container: AGENT_MODE
+          description:
+            en_US: "Agent mode: mock or openrouter"
+            it_IT: "Modalità dell'agente: mock oppure openrouter"
+        - container: OPENROUTER_API_KEY
+          description:
+            en_US: OpenRouter API key
+            it_IT: Chiave API OpenRouter
+        - container: OPENROUTER_MODEL
+          description:
+            en_US: OpenRouter model identifier
+            it_IT: Identificatore del modello OpenRouter
+      volumes:
+        - container: /data
+          description:
+            en_US: Persistent conversation database
+            it_IT: Database persistente delle conversazioni
   frontend:
     build: ../frontend
     restart: unless-stopped
@@ -18,5 +37,34 @@ services:
       - "${TABLET_AGENT_PORT:-8088}:8080"
     depends_on:
       - backend
+    x-casaos:
+      ports:
+        - container: "8080"
+          description:
+            en_US: Web interface
+            it_IT: Interfaccia web
 volumes:
   chats:
+
+# CasaOS/ZimaOS metadata. Set CASAOS_ICON_URL when casaos.local is not reachable.
+x-casaos:
+  id: xyz.palumbolab.tabletagent
+  main: frontend
+  index: /
+  port_map: "${TABLET_AGENT_PORT:-8088}"
+  scheme: http
+  icon: "${CASAOS_ICON_URL:-http://casaos.local:${TABLET_AGENT_PORT:-8088}/icon-512.png}"
+  title:
+    en_US: Tablet Agent
+    it_IT: Tablet Agent
+  tagline:
+    en_US: An assistant for older tablets
+    it_IT: Un assistente per tablet meno recenti
+  description:
+    en_US: A lightweight chat interface with an AI assistant and persistent conversation history.
+    it_IT: Una chat leggera con assistente AI e cronologia delle conversazioni persistente.
+  category: AI
+  author: Paolo Palumbo
+  developer: Paolo Palumbo
+  version: "0.1.0"
+  repo: https://github.com/paolpal/TabletAgent
