@@ -140,3 +140,16 @@ button { cursor: pointer; }
 .brand > span { display: inline-block; vertical-align: middle; }
 .brand-mark { margin-right: 3px; }
 .message.assistant .avatar .mark-image { position: absolute; width: 25px; height: 25px; top: 50%; left: 50%; margin: -12.5px 0 0 -12.5px; }
+
+/* Keep wide equations accessible on narrow and older touch screens. */
+.markdown .katex-display { overflow-x: auto; overflow-y: hidden; padding: 4px 0; -webkit-overflow-scrolling: touch; }
+
+/* Syntax colours for code blocks (Prism); plain and unknown languages stay readable. */
+.markdown pre { color: #d7dce2; }
+.markdown pre .token.comment, .markdown pre .token.prolog, .markdown pre .token.doctype { color: #929ca7; }
+.markdown pre .token.punctuation { color: #c2c9d0; }
+.markdown pre .token.keyword, .markdown pre .token.atrule, .markdown pre .token.selector { color: #d8a3ff; }
+.markdown pre .token.string, .markdown pre .token.attr-value, .markdown pre .token.char { color: #b7d995; }
+.markdown pre .token.number, .markdown pre .token.boolean, .markdown pre .token.constant { color: #f3ba79; }
+.markdown pre .token.function, .markdown pre .token.class-name, .markdown pre .token.tag { color: #82caff; }
+.markdown pre .token.operator, .markdown pre .token.property, .markdown pre .token.attr-name { color: #f0a5a2; }
