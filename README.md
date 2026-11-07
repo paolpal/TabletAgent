@@ -4,7 +4,7 @@ Assistente per tablet meno recenti: interfaccia web senza framework, backend Pyt
 
 ## Struttura
 
-- `frontend/`: HTML, CSS e JavaScript ES5; Nginx inoltra `/api` al backend.
+- `frontend/`: HTML, `js/`, `css/`, `assets/` e librerie in `vendor/`; Nginx inoltra `/api` al backend. Markdown e formule TeX (`$...$`, `$$...$$`, `\(...\)` e `\[...\]`) sono renderizzati anche senza CDN.
 - `backend/`: FastAPI, Deep Agents, SQLite; dipendenze e ambiente gestiti con `uv`.
 - `docker/`: Compose e configurazione d'esempio.
 
@@ -23,9 +23,11 @@ Visita `http://IP_DEL_SERVER:8088` dalla rete locale. I messaggi sono conservati
 
 ## CasaOS
 
-Il file `docker/compose.yml` include i metadati CasaOS, con `frontend` come servizio principale. La porta del collegamento segue `TABLET_AGENT_PORT` (predefinita `8088`). L’icona è servita dall’app; per impostazione predefinita usa `http://casaos.local:8088/icon-512.png` (con la porta configurata). Se `casaos.local` non è raggiungibile, imposta `CASAOS_ICON_URL` in `docker/.env` con l'indirizzo completo dell'icona, per esempio `http://192.168.1.10:8088/icon-512.png`. L'URL deve essere raggiungibile dalla dashboard e dai dispositivi che la visualizzano.
+Il file `docker/compose.yml` include i metadati CasaOS, con `frontend` come servizio principale. La porta del collegamento segue `TABLET_AGENT_PORT` (predefinita `8088`). Per l’icona, copia `frontend/icon-512.png` in `/var/lib/casaos/www/img/tablet-agent.png` sul server CasaOS: il portale la servirà come `/img/tablet-agent.png`, anche quando è aperto da un altro dispositivo. `CASAOS_ICON_URL` consente di usare un indirizzo alternativo quando l'ambiente che legge il Compose lo fornisce.
 
 Il Compose usa build locali (`../frontend` e `../backend`): conserva l'intera repository sul server ed eseguilo dalla directory `docker/`. I metadati non trasformano la repository privata in un pacchetto App Store o in immagini pubbliche.
+
+Lo streaming raggruppa i frammenti per circa 350 ms e il frontend aggiorna solo il messaggio corrente. `STREAM_BUFFER_MS` permette di cambiare l'intervallo lato server (50–2000 ms); il ritmo di aggiornamento dell'interfaccia resta indipendente. Il valore va verificato sul tablet: vedi `docs/ipad-streaming-performance.md`. I blocchi di codice con linguaggio indicato sono colorati con Prism.
 
 ## Sviluppo e test
 
@@ -36,6 +38,8 @@ cd backend
 uv sync --locked
 uv run pytest
 ```
+
+Per avviare in locale backend e frontend sulla stessa porta: `backend/.venv/bin/uvicorn --app-dir backend local:app --host 0.0.0.0 --port 8088`. Viene letto il `.env` nella radice e, se è presente una chiave OpenRouter, viene usato il modello configurato.
 
 ## Stato del progetto
 

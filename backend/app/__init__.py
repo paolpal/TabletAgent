@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 
 from .agent import reply, stream_events
 from .store import Store
+from .stream_buffer import buffered_events
 
 logger = logging.getLogger(__name__)
 
@@ -78,10 +79,13 @@ def create_app(store=None, agent=None):
         content = content.strip()
         history = store.messages(chat_id)
 
-        def events():
+        def source():
+            yield from streaming_agent(history, content)
+
+        async def events():
             parts = []
             try:
-                for event in streaming_agent(history, content):
+                async for event in buffered_events(source()):
                     if 'text' in event:
                         parts.append(event['text'])
                     yield json.dumps(event, ensure_ascii=True) + '\n'
