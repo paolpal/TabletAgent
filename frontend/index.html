@@ -10,12 +10,13 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
   <link rel="manifest" href="manifest.webmanifest">
   <title>Tablet Agent</title>
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="vendor/katex/katex.min.css?v=1">
+  <link rel="stylesheet" href="css/style.css?v=12">
 </head>
 <body>
   <div class="app" id="app">
     <aside class="sidebar" id="sidebar">
-      <div class="brand"><img class="brand-mark" src="mark.svg?v=2" alt=""><span>tablet<span class="brand-light">agent</span></span></div>
+      <div class="brand"><img class="brand-mark" src="assets/mark.svg?v=2" alt=""><span>tablet<span class="brand-light">agent</span></span></div>
       <button class="new-chat" id="new-chat" type="button"><span>＋</span> Nuova conversazione</button>
       <div class="sidebar-heading" id="sidebar-heading">CONVERSAZIONI</div>
       <nav id="chats" class="chat-list" aria-label="Conversazioni"></nav>
@@ -23,8 +24,8 @@
     </aside>
     <main class="main">
       <header class="topbar">
-        <button id="menu" class="menu-button" type="button" aria-label="Chiudi conversazioni" title="Chiudi conversazioni" aria-controls="sidebar" aria-expanded="true"><img id="menu-icon" src="sidebar-open.svg" alt=""></button>
-        <div class="top-title"><span class="top-icon"><img src="mark.svg?v=2" alt=""></span><span>Assistente <small>Il tuo assistente personale</small></span></div>
+        <button id="menu" class="menu-button" type="button" aria-label="Chiudi conversazioni" title="Chiudi conversazioni" aria-controls="sidebar" aria-expanded="true"><img id="menu-icon" src="assets/sidebar-open.svg" alt=""></button>
+        <div class="top-title"><span class="top-icon"><img src="assets/mark.svg?v=2" alt=""></span><span>Assistente <small>Il tuo assistente personale</small></span></div>
         <span class="top-badge"><span class="connection-dot"></span> Pronto ad aiutarti</span>
       </header>
       <div id="messages" class="messages" aria-live="polite"></div>
@@ -34,7 +35,7 @@
           <form id="chat-form" class="composer">
             <label class="sr-only" for="message">Scrivi un messaggio</label>
             <textarea id="message" rows="2" maxlength="20000" placeholder="Scrivi un messaggio..."></textarea>
-            <div class="composer-bottom"><span>Chiedimi qualsiasi cosa</span><button id="send" type="submit" aria-label="Invia messaggio"><img src="arrow-up.svg" alt=""></button></div>
+            <div class="composer-bottom"><span>Chiedimi qualsiasi cosa</span><button id="send" type="submit" aria-label="Invia messaggio"><img src="assets/arrow-up.svg" alt=""></button></div>
           </form>
           <p class="disclaimer">Le risposte possono contenere errori. Verifica le informazioni importanti.</p>
         </div>
@@ -61,8 +62,12 @@
       return false;
     };
   </script>
-  <script src="marked.min.js?v=2" onerror="tabletStartupError('impossibile caricare il renderer Markdown')"></script>
-  <script src="suggestions.js?v=2" onerror="tabletStartupError('impossibile caricare i suggerimenti')"></script>
-  <script src="app.js?v=7" onerror="tabletStartupError('impossibile caricare la chat')"></script>
+  <script src="vendor/marked/marked.min.js?v=2" onerror="tabletStartupError('impossibile caricare il renderer Markdown')"></script>
+  <script src="vendor/katex/katex.min.js?v=1"></script>
+  <script>window.Prism = {manual: true};</script>
+  <script src="vendor/prism/prism.min.js?v=1"></script>
+  <script src="js/markdown.js?v=2"></script>
+  <script src="js/suggestions.js?v=2" onerror="tabletStartupError('impossibile caricare i suggerimenti')"></script>
+  <script src="js/app.js?v=10" onerror="tabletStartupError('impossibile caricare la chat')"></script>
 </body>
 </html>

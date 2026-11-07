@@ -23,7 +23,7 @@
         menu.setAttribute('aria-expanded', open ? 'true' : 'false');
         menu.setAttribute('aria-label', label);
         menu.title = label;
-        document.getElementById('menu-icon').src = open ? 'sidebar-open.svg' : 'sidebar-closed.svg';
+        document.getElementById('menu-icon').src = open ? 'assets/sidebar-open.svg' : 'assets/sidebar-closed.svg';
     }
 
     function request(method, url, data, callback) {
@@ -57,29 +57,18 @@
 
     function mark(className) {
         var image = element('img', className);
-        image.src = 'mark.svg?v=2';
+        image.src = 'assets/mark.svg?v=2';
         image.alt = '';
         return image;
     }
 
-    // Marked 0.3.x supports ES5. Raw HTML is escaped; links only allow HTTP(S).
-    function markdownRenderer(noLinks) {
-        var renderer = new marked.Renderer();
-        renderer.link = function (href, title, text) {
-            if (noLinks || !/^https?:\/\//i.test(href)) return text;
-            return '<a href="' + href.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;') + '" target="_blank" rel="noopener noreferrer">' + text + '</a>';
-        };
-        renderer.image = function (href, title, text) { return text; };
-        return renderer;
-    }
-
     function inlineMarkdown(parent, text, noLinks) {
-        parent.innerHTML = marked.inlineLexer(text, {}, {renderer: markdownRenderer(noLinks), sanitize: true, gfm: true, breaks: false});
+        parent.innerHTML = tabletMarkdown.render(text, true, noLinks);
     }
 
-    function markdown(text) {
+    function markdown(text, highlight) {
         var container = element('div', 'markdown');
-        container.innerHTML = marked(text, {renderer: markdownRenderer(false), sanitize: true, gfm: true, tables: true});
+        container.innerHTML = tabletMarkdown.render(text, false, false, highlight);
         return container;
     }
 
@@ -237,10 +226,23 @@
         status.textContent = 'Sto pensando…';
         function sendMessage(id) {
             var xhr = new XMLHttpRequest(), offset = 0, pending = '', answer = '', done = false, failed = false;
-            var items = currentItems.slice(0);
+            var items = currentItems.slice(0), renderTimer = null, dirty = false;
             items.push({role: 'user', content: content});
             items.push({role: 'assistant', content: ''});
             showMessages(items);
+            function flushAnswer() {
+                var body;
+                if (renderTimer !== null) { window.clearTimeout(renderTimer); renderTimer = null; }
+                if (!dirty) return;
+                dirty = false;
+                body = messages.querySelector('.message.assistant:last-child .markdown');
+                if (body) body.innerHTML = tabletMarkdown.render(answer, false, false, false);
+                messages.scrollTop = messages.scrollHeight;
+            }
+            function scheduleAnswer() {
+                dirty = true;
+                if (renderTimer === null) renderTimer = window.setTimeout(flushAnswer, 350);
+            }
             function process() {
                 var lines, i, event;
                 if (xhr.readyState < 3) return;
@@ -251,7 +253,7 @@
                     if (!lines[i]) continue;
                     try { event = JSON.parse(lines[i]); } catch (error) { continue; }
                     if (event.status) showProgress(event.status);
-                    if (event.text) { answer += event.text; items[items.length - 1].content = answer; status.textContent = 'Sto scrivendo…'; showMessages(items); }
+                    if (event.text) { answer += event.text; items[items.length - 1].content = answer; showProgress('Sto scrivendo…'); scheduleAnswer(); }
                     if (event.error) { status.className = 'status error'; status.textContent = event.error; failed = true; }
                     if (event.done) done = true;
                 }
@@ -262,6 +264,7 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 3 || xhr.readyState === 4) process();
                 if (xhr.readyState !== 4) return;
+                flushAnswer();
                 busy = false; send.disabled = false;
                 if (done && !failed) {
                     status.textContent = '';

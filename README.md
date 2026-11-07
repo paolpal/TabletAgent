@@ -4,7 +4,7 @@ Assistente per tablet meno recenti: interfaccia web senza framework, backend Pyt
 
 ## Struttura
 
-- `frontend/`: HTML, CSS e JavaScript ES5; Nginx inoltra `/api` al backend.
+- `frontend/`: HTML, `js/`, `css/`, `assets/` e librerie in `vendor/`; Nginx inoltra `/api` al backend. Markdown e formule TeX (`$...$`, `$$...$$`, `\(...\)` e `\[...\]`) sono renderizzati anche senza CDN.
 - `backend/`: FastAPI, Deep Agents, SQLite; dipendenze e ambiente gestiti con `uv`.
 - `docker/`: Compose e configurazione d'esempio.
 
@@ -27,6 +27,8 @@ Il file `docker/compose.yml` include i metadati CasaOS, con `frontend` come serv
 
 Il Compose usa build locali (`../frontend` e `../backend`): conserva l'intera repository sul server ed eseguilo dalla directory `docker/`. I metadati non trasformano la repository privata in un pacchetto App Store o in immagini pubbliche.
 
+Lo streaming raggruppa i frammenti per circa 350 ms e il frontend aggiorna solo il messaggio corrente. `STREAM_BUFFER_MS` permette di cambiare l'intervallo lato server (50–2000 ms); il ritmo di aggiornamento dell'interfaccia resta indipendente. Il valore va verificato sul tablet: vedi `docs/ipad-streaming-performance.md`. I blocchi di codice con linguaggio indicato sono colorati con Prism.
+
 ## Sviluppo e test
 
 Installa [uv](https://docs.astral.sh/uv/), poi:
@@ -36,6 +38,8 @@ cd backend
 uv sync --locked
 uv run pytest
 ```
+
+Per avviare in locale backend e frontend sulla stessa porta: `backend/.venv/bin/uvicorn --app-dir backend local:app --host 0.0.0.0 --port 8088`. Viene letto il `.env` nella radice e, se è presente una chiave OpenRouter, viene usato il modello configurato.
 
 ## Stato del progetto
 
